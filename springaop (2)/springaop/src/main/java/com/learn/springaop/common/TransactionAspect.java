@@ -24,7 +24,4 @@ public class TransactionAspect {
      public void rollbackTransaction(){
         log.info("Transaction rollback....");
     }
-
-
-
 }

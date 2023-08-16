@@ -112,4 +112,11 @@ Note  : allowed Symbols in pointcut expression : *(star),.(dot)
 #4)public * in.rushi.*.*(..);
       any pa
 
-
+---------------------------------------------------------------------------------------------------
+before -        It will be executed before  b.method
+after -        It will be executed after  b.method if method success or fail
+AfterReturning -It will be executed after  b.method if method success
+AfterThrowing - It will be executed after  b.method In method anyException occurred
+-------------------------------------------------------------------------------------------------------
+From Advice,we need to call b.method  by using JoinPoint details using : Proceedingjoinpoint.
+IT has a method call proceed() that make call to b.method Even It returns value given by method(as object type)
