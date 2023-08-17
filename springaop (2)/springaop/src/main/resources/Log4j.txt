@@ -1,0 +1,211 @@
+ ---------------------------------log 4j---------------------------------------------
+ Environment - System where application is running
+ Type - Environment
+ - dev
+ - QA
+ -uat
+ - production
+
+ while Developing  and testing application , message are printed on console in ide(STS/Eclipses)
+ Message like Success,warn,Exception
+ In console section will display  Success,warn,Exception message
+ console section  can display only 100/200 message only,console is the part of only development environment
+ On QA,UAT,Production console is not available
+
+ Example : I am booking the ticket from the ticket book application. Money is debited from my account but ticket is not book
+     then user(me) I have talked with customercare then one ticket is generating and send the ticket to support teram/devlopement
+-----------------------------------------------------------------------------------------------------------------------=
+I want get the all message about application which is running on production what kind of message like Success,warn,Exception
+such process getting message it calling logging. after getting message
+------------------------------------------------------------------------------------------------------------
+-where we have to store the logging message we can store the message
+-In console ,File , Database, and we can send this logging message to email
+- logging say only what is the problem come It's not slove the problem
+-------------------------------------------------------------------------------------------------------------
+LOGGING : It is the process of getting/fetching the Success,warn,Exception message from the server while it is running
+LoG 4j : Log 4j is Logging tool.It is for only java
+by using log 4j, we can get log messages and store in (file),database,send email, console
+Mostly use log in file log file[Extension of file is .log]
+Log 4j is implemented at time of developing and use in production
+
+=> by using log files,dev/support teams identifies the mistake and fix code.
+=====================================================================================================
+                         Log 4j Component
+ 1)logger(which class)
+ 2)Appender(where to print)
+ 3)Layout(how to print)
+
+a) Logger object
+  This object must be created inside class for which Log 4j is required
+  => Ex : For this class  controllers/services/Repository
+          if we get any Exception/error/ inside the classes we can trace those into logFile
+
+b) Appender : This is use for indicate where to store the log message
+             : Appender is use for specify  where to store the log message
+Type Are :
+    1) ConsoleAppender: this is use for print log message on console
+   **2)FileAppender : Store the log message in .log file
+    3)JDBCAppender :  Store the log message inside the database table
+    4)Ftp/TelnetAppender : send the log message one server to another server
+    5) SMTP APPENDER : send the log message using email
+
+c)Layout : It indicates Message Format that should be printed
+           how you want to print the log message on appender
+        a)Simple layout : print message as it is given by application
+        b)Html layout   : print message in html layout
+        c)xml layout    : print message as xml layout
+        d)Most useful pattern layout : print message given pattern by programmer
+---------------------------------------------------------------------------------------------------------------
+priority method : are follow
+
+This are predefined method which is inside given Logger object by using this message we have to print message
+in application
+-------------------------------------------------
+    Sl No         Name     Method
+------------------------------------------------
+    1.            DEBUG    debug(message)  final message
+    2.            INFO     info(message)   info message
+    3.            WARN     warn(message)   any warning
+    4.            ERROR    error(message)  error message(We print Exception)
+    5.            FATAl    fatal(message)   Exception in high level
+    NA              OFF       NA
+---------------------------------------------------------------------------------------------------
+Debug : This method is used to print a final/success message
+        Ex : Employee Created with ID-Employe-3653 successfully
+INFO  : This method is used to print current status in execution
+        Example : Request came to controller method
+                  Object send to service layer
+                  Service back to controller
+                  try blok execution completed
+Warn : We do not use the warn. framwork is use this warn.this is use for the show the warning in application
+       example : File Object created but never closed
+               : variable is created but not used.
+
+ Error : This method is use for print any general  exception
+        Ex: Null Pointer Exception,ArrayIndex Bound of exception
+
+ Fatal  : It is use for print High level Exception that makes STOPPING application usage.This is also use by framework
+         Ex : Database Connection is not working
+            : Network server error
+            : Api gat way is down
+
+           => In Which class we have to use the logger
+               we have to create Object with static declaration like
+
+               public Static Logger log =  Logger.getLogger(className.class)
+               public static void main(String [] args){
+                Step 1 //Crate Layout
+                     Layout layout = SimpleLayOut();
+
+                // step 2 :   Creat Appender + link layout
+                    Appender appender = new ConsoleAppender(layout);
+                    Appender appender =  new FileAppender(patter, location file);
+
+                 //step 3 : Link with Logger
+                    log.addApender()
+
+
+               }
+Note : Above code is a old way to use Logging.
+       -------------printing message0-----------
+       log.debug("From debug")
+       log.info("From info")
+       log.warn("From warn")
+       log.error("From error")
+       log.debug("From debug")
+PATTERN LAYOUT
+       Layout layout = PatternLayout("%p %d %C %M  %m %n");
+             %p = method name like
+             %d  = date
+             %C  = class
+             %M  = Method name
+             %m = message
+             %n = next Line
+
+----------------------------------------------------------------------------------------------------------------
+	----------------------------------------------------
+*) Logging : getting messages from application (Production server)
+    like success, errors, warnings,..etc
+
+*) Moniter the process, find bugs from realtime environment.
+
+*) Tools :
+1. Log4J 2.x
+2. Java Logging
+3. Commons Logging
+..etc
+
+*) Log Messages can be stored at different places
+  Files, Database, Email , Console..etc
+
+==================================================================
+3 Components
+
+	1. Logger        2. Appender        3. Layout
+      (which classes)   (where to store)   (how to print)
+
+*) Logger : it is a base object in Log4J. It enables/activates
+   Logging/Moniter of a class/process.
+
+class EmployeeController {
+   Logger log = LogManager.getLogger(EmployeeController.class);
+}
+
+*) Do not create Logger object for Entity/DTO/POJO classes.
+*) Recomanded Controllers/Services..etc
+
+--- Priority Methods -------------------------
+These are pre-defined methods exist in Logger object
+which prints messages based on type.
+
+TRACE  : To find messages from multiple stages/env/apps.
+DEBUG  : To print final result of a process/ internal details
+INFO   : Current Step
+WARN   : App related messages
+ERROR  : To give details about exception
+FATAL  : Environment related issues
+ ex:Database Connection is closed.
+
+TRACE > DEBUG > INFO > WARN > ERROR > FATAL
+
+=============================================================
+Appender:- Location of messages to be stored. (classes)
+1. **FileAppender    : Write data to Log File  (___.log)
+2. ConsoleAppender : Prints data at console
+3. JDBCAppender    : Store messages at Database table
+4. SMTPAppender    : Write messages to Email.
+
+*) 1 Project can have even multiple appenders.
+
+Layout: Message Format/Pattern.
+1. Default Layout (Message and NextLine)
+2. HTML Layout (___.html)
+3. XML Layout (___.xml)
+4.*** PatternLayout (Your own format)
+===========================
+----------------------------------------------------------------------------------------------------------------
+we can also do configuration in .xml file like below
+
+?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+	<Appenders>
+		<Console name="LogToConsole" target="SYSTEM_OUT">
+			<PatternLayout>
+				<Pattern>%d - %C [%M] -(%p) %m %n</Pattern>
+			</PatternLayout>
+		</Console>
+		<File name="LogToFile" fileName="logs/myapp.log">
+			<PatternLayout>
+				<Pattern>%d - %C [%M] -(%p) %m %n</Pattern>
+			</PatternLayout>
+		</File>
+	</Appenders>
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="LogToConsole" />
+			<AppenderRef ref="LogToFile" />
+		</Root>
+	</Loggers>
+</Configuration>
+
+-----------------------------------------------------------------------------------------------------------------
