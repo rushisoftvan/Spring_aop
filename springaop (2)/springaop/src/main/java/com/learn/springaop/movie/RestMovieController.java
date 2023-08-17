@@ -1,5 +1,6 @@
 package com.learn.springaop.movie;
 
+import com.learn.springaop.annotation.AroundExample;
 import com.learn.springaop.annotation.Log;
 import com.learn.springaop.annotation.Transaction;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,20 @@ public class RestMovieController {
     public ResponseEntity<MovieDto> getMovie(@PathVariable("id") Integer movieId, @PathVariable("movieName") String movieName){
         MovieDto omg = this.movieService.fetchMovieWithAop(movieId, movieName);
         return ResponseEntity.ok(omg);
+    }
+
+
+    @AroundExample
+    @GetMapping("/Around/{id}")
+    public void checkAroundExample(@PathVariable("id") Integer id){
+        if(id>2){
+            System.out.println("rushikesh");
+            System.out.println(id);
+        }
+        else{
+            throw new IllegalArgumentException("id should not be less then 2");
+        }
+
     }
 
 }
